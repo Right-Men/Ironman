@@ -9,6 +9,11 @@ import {
 } from 'react-native';
 
 import Account from '../test3';
+import Invest1 from '../invest1';
+import Invest2 from '../invest2';
+import Invest3 from '../invest3';
+import Invest4 from '../invest4';
+
 
 
 
@@ -39,10 +44,10 @@ class Invest extends Component{
                     tabBarTextStyle={{fontSize: 13}}
                 >
 
-                <Account type="" tabLabel="投资中（4）" navigator={this.props.navigator}  />
-                <Account tabLabel="已确认（3）" navigator={this.props.navigator} />
-                <Account tabLabel="回款中（3）" navigator={this.props.navigator} />
-                <Account tabLabel="已完结（3）" navigator={this.props.navigator} />
+                <Invest1 type="" tabLabel="投资中（4）" navigator={this.props.navigator}  />
+                <Invest2 tabLabel="已确认（3）" navigator={this.props.navigator} />
+                <Invest3 tabLabel="回款中（3）" navigator={this.props.navigator} />
+                <Invest4 tabLabel="已完结（3）" navigator={this.props.navigator} />
             </ScrollableTabView>
 
             </View>
