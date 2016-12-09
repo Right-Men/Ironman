@@ -9,7 +9,8 @@ import {
     InteractionManager,
     TouchableOpacity,
     Dimensions,
-    LayoutAnimation
+    LayoutAnimation,
+    Alert
 } from 'react-native';
 import LoginButton from './common/loginBtn'
 import Spinner from 'react-native-spinkit'
@@ -31,7 +32,8 @@ import EditView from './common/editView'
 import PostUtil from './common/postUtil'
 import LoginSuccess from './root'
 import Config from './common/config'
-
+import Request from './common/request'
+import _ from 'lodash'
 const {width,height} = Dimensions.get('window')
 var Platform = require('Platform');
 class Longin extends Component {
@@ -56,22 +58,39 @@ class Longin extends Component {
 
     }
     onPressCallback = () => {
-      /*  this.onLoginSuccess();*/
         let formData = new FormData();
         formData.append("username",this.userName);
         formData.append("password",this.password);
-
         let url = Config.api.release + Config.api.login
-        this._onPress();
-        PostUtil.postJson(url,formData,(responseText) => {
-            if(responseText){
+        if(this.userName == ''){
+            Alert.alert('请输入账号')
+        }else if(this.password == ''){
+            Alert.alert('请输入密码')
+        }
+        if(!this.userName == ''&&!this.password == ''){
+            this._getLogin(url,{username:this.userName,password:this.password})
+         /*   Request.post(url,{username:this.userName,password:this.password})*/
+                .then((responseText) =>{
+                    if(responseText){
+                        responseText.success == true ? this.onLoginSuccess():Alert.alert('登录失败,请检查您输入的账号密码是否正确!');
+                    }
+                })
+        }
 
-                responseText.success == false ? alert('登录失败,请检查您输入的账号密码是否正确!'):this.onLoginSuccess();
-            }
-           // {"success":false,"msg":"登录失败"}
 
-        })
     };
+    _getLogin = (url,body) => {
+        var options = _.extend(Config.header,{
+            body:JSON.stringify(body)
+        })
+
+        return fetch(url, options)
+        .then((response) => response.json()).catch(function(error) {
+            console.log('There has been a problem with your fetch operation: ' + error.message);
+            Alert.alert('请检查网络连接')
+            /*throw error;*/
+        });
+}
     onLoginSuccess(){
 
         const navigator = this.props.navigator;
@@ -118,9 +137,6 @@ class Longin extends Component {
         });
         this.setState({w: this.state.w - 6, h: this.state.h - 6})
         if(this.state.w>0){
-
-
-
             requestAnimationFrame(this._onPress)
         }else{
             this.setState({isVisible:true})
@@ -144,7 +160,7 @@ class Longin extends Component {
                 </View>
               <View style={{flex:70,margin: 10}}>
                  <Hoshi
-                    label={'请输入账号：'}
+                    label={'账号：'}
                     // this is used as active border color
                     borderColor={'#63B8FF'}
                     // this is used to set backgroundColor of label mask.
@@ -156,7 +172,7 @@ class Longin extends Component {
                 />
                <View style={{height:10,width:width}} />
                 <Hoshi
-                    label={'请输入密码：'}
+                    label={'密码：'}
                     // this is used as active border color
                     borderColor={'#63B8FF'}
                     secureTextEntry={true}
