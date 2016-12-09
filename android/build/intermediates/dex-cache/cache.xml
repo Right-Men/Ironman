@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-6c8b6658fde01e1882372f96ad4d2bbb98f5e308.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.37.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="731e2c3a475cd3a3cb3536d6c32e72e1ad2ed09e">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-aaa2c00bc47f0d64f5f082abdc2db39809774b0d.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fbcore/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="98786c1770b531b9194fb6448b2a2692c64074b6">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-057841efc9c3adf3bb539780af960b2b44668114.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.2.1/support-annotations-23.2.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ccb693bc0774fcb637246f7360de25b4af7df318">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/support-annotations-23.2.1-5fd42b7718ae651b50c0802ef4336c2b58e861c9.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3be474b1b21b31cf2fa93fe6bd641ae108d96452">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-7e05ebd984f1568d16c1a54ba2413c237f180490.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.2.1/jars/libs/internal_impl-23.2.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="607a3d0b8013b4ccbfeb0b7cb293351994e021fb">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/internal_impl-23.2.1-317f6d5cffe2aee33770ac4d6633d25fbc6826eb.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.facebook.fresco/drawee/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1137942adeb03984c1311b662363dd38fc238fd3">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-9731fcbb92a9ce7788055ac7689c3939f4716235.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/fl/rn-splash-screen/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1147014cb62b6a83aef38628ceebf034744d7860">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-97018aee41aeec5aaa533582453e9533bf954832.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/fl/react-native-vector-icons/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1123f6e4e9b3a2ec22a457d76f196fe3129cb9d1">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-59c9d643fedf9c9f9bb06c2130c8718791c58409.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-base/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ca63c521b5745ae9a09629d7ca67ff6bc2a967fe">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-5ff8853af82fefbacc04fa0a2d8e773a029cddea.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.facebook.fresco/fresco/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d31aadf33187c37a7cd63dc1b769f8c6e33f78c3">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-586545805d8fc8289863c37110e257682e407052.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/fl/@remobile@react-native-marquee-label/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="9dd77206f3bd23dce92d731f373044436e44de39">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-45ec16d6d0ad811a00b9e89493be89283db83f56.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.37.0/jars/libs/infer-annotations-1.5.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6682334d34f00764e6753efcd15f060a4b95cda6">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/infer-annotations-1.5-327a1e6fc8662be3b8329d82d13e3e23178ca6e5.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.2.3/1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14/jackson-core-2.2.3.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1a0113da2cab5f4c216b4e5e7c1dbfaa67087e14">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/jackson-core-2.2.3-b5ae76ce2460b4b7287a402feff32f2e86bb2406.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-ws/3.4.1/8ace66ef7002d98f633377c9e67daeeb196d8c3b/okhttp-ws-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8ace66ef7002d98f633377c9e67daeeb196d8c3b">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/okhttp-ws-3.4.1-092dad563826bc35b2dbe8e6a3a227dbaec6d355.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.0/5871fb60dc68d67da54a663c3fd636a10a532948/jsr305-3.0.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/jsr305-3.0.0-b45381482ea8e09497a85f609a9277d327678e79.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.facebook.soloader/soloader/0.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8f615bca00639150c9eb6175d4b5471193f70794">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-31cb2739b3c455562495ea492608b6a3b56160d4.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/org.webkit/android-jsc/r174650/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="12b885b3ed1fc74a51f671ad40867aa91271843d">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-1591dd31e9f62dc392b286cd831fe74e844c01a1.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.github.ybq/Android-SpinKit/1.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="21c0f1b0de29bfe601028757c5cb125c343f5164">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-e9949dd52a833464358f26afb00a3b1635834dac.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/library-2.4.0-67df8c51e19eccde348849398ff5300a459d8060.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/bolts-tasks-1.4.0-c9d56a45dd7c69f0a589441da9209a8035e5f1f4.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/javax.inject-1-5777abab3ed3b9433dee49af10d71677a062bfb0.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3341b66c54367e777a0647e2db96c045329bfeab">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-2d9161912744d89675ae00d1a7121f07301f546c.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-c7739f1f5c4c7aa8704a46a8db37f83e4f02f0a1.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/com.facebook.fresco/imagepipeline-okhttp3/0.11.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2b8a01ad9da5d26d0067894c22e87597bca2c500">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-404872330a1d2b968d52ea3c34584767c9a3de7d.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.4.1/c7c4f9e35c2fd5900da24f9872e3971801f08ce0/okhttp-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c7c4f9e35c2fd5900da24f9872e3971801f08ce0">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/okhttp-3.4.1-566577c636ee7569dc1b13286ff1de8f7225e5b3.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/exploded-aar/fl/react-native-spinkit/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="817d0745fb004d98fc9a7f1cc593020993b4da24">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/classes-b20badf8a31178e77f07e059de842597ea88a087.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.9.0/f824591a0016efbaeddb8300bee54832a1398cfa/okio-1.9.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f824591a0016efbaeddb8300bee54832a1398cfa">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/okio-1.9.0-443dbf90fb747e377851414757b56a7e327735f5.jar" />
+    </item>
+    <item
+        jar="/Users/fandongyang/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp-urlconnection/3.4.1/63994437f62bc861bc20c605d12962f7246116d1/okhttp-urlconnection-3.4.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="63994437f62bc861bc20c605d12962f7246116d1">
+        <dex dex="/Users/fandongyang/Desktop/fl/android/app/build/intermediates/pre-dexed/debug/okhttp-urlconnection-3.4.1-1aa71348ed2a66044e1e84d3b6fc08e74911183c.jar" />
+    </item>
+
+</items>
