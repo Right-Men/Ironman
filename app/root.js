@@ -126,8 +126,21 @@ class Root extends Component {
                             selectedTabIOS: 'list',
                         });
                     }}>
+                          <Navigator
+                            initialRoute={{
+                            name:'HomePage',
+                            component:HomePage
+                        }}
+                            configureScene={(route) => {
+                            return Navigator.SceneConfigs.PushFromRight
 
-                        <HomePage navigator={this.props.navigator} />
+                        }}
+                            renderScene={(route,navigator) =>{
+                            let Component = route.component;
+                            return <Component {...route.passProps} route = {route} navigator={navigator} />
+                        }}
+                        />
+                       {/* <HomePage navigator={this.props.navigator} />*/}
 
                     </Icon.TabBarItemIOS>
                     <Icon.TabBarItemIOS

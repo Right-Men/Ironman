@@ -12,27 +12,14 @@ import {
     LayoutAnimation,
     Alert
 } from 'react-native';
-import LoginButton from './common/loginBtn'
 import Spinner from 'react-native-spinkit'
 
 import {
-    Kaede,
     Hoshi,
-    Jiro,
-    Isao,
-    Madoka,
-    Akira,
-    Hideo,
-    Kohana,
-    Makiko,
-    Sae,
-    Fumi,
 } from 'react-native-textinput-effects';
-import EditView from './common/editView'
-import PostUtil from './common/postUtil'
+
 import LoginSuccess from './root'
 import Config from './common/config'
-import Request from './common/request'
 import _ from 'lodash'
 const {width,height} = Dimensions.get('window')
 var Platform = require('Platform');

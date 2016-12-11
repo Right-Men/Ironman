@@ -122,43 +122,45 @@ const styles = StyleSheet.create({
 
     },
     dot:{
-        width:10,
-        height:10,
+        width:8,
+        height:8,
         backgroundColor:'transparent',
         borderColor:"#ff6600",
         borderWidth:1,
-        borderRadius:5,
-        marginLeft:12,
-        marginRight:12
+        borderRadius:4,
+        marginLeft:10,
+        marginRight:10
     },
     activeDot:{
-        width:10,
-        height:10,
+        width:8,
+        height:8,
         borderWidth:1,
-        borderRadius:7,
-        marginLeft:12,
-        marginRight:12,
+        borderRadius:4,
+        marginLeft:10,
+        marginRight:10,
         backgroundColor:'#ee735c',
         borderColor:"#ee735c",
 
     },
     pagination:{
-      bottom:100
+      bottom:height*0.23
     },
     textView:{
-        position:'absolute',
-        width:width,
-        height:80,
-        bottom:0,
-        backgroundColor: '#3281DD',
-        borderRadius:5,
         justifyContent: 'center',
         alignItems:'center',
+        left:width/3,
+        width:width/3,
+        right:width/3,
+        height:40,
+        bottom:height*0.15,
+        backgroundColor: '#3281DD',
+        borderRadius:5,
     },
     loginText: {
         color: '#ffffff',
-        fontSize:18,
+        fontSize:16,
         fontWeight: 'bold',
+
 
     },
 });

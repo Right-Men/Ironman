@@ -72,7 +72,10 @@ class Root extends Component{
         })
     }
     configureScene = () => {
-        return Navigator.SceneConfigs.PushFromRight;
+     /*   return Navigator.SceneConfigs.PushFromRight;*/
+        var conf = Navigator.SceneConfigs.HorizontalSwipeJump;
+        conf.gestures = null;
+        return conf;
     };
 
     renderScene = (route , navigator) => {
@@ -128,4 +131,4 @@ const  styles = StyleSheet.create({
 
 AppRegistry.registerComponent('fl', () => Root);
 
-// export default Root;
+// export default Root; 

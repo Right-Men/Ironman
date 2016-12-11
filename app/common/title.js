@@ -9,9 +9,12 @@ import {
     Text,
     Image,
     StyleSheet,
-    TouchableOpacity
+    TouchableOpacity,
+    Dimensions
+
 } from 'react-native';
 
+const {Width} = Dimensions.get('window')
 export default class Title extends React.Component {
 
 
@@ -23,18 +26,14 @@ export default class Title extends React.Component {
 
     render() {
         return (
-
             <View  style={[styles.header,{flexDirection: 'row'}]}>
-        <TouchableOpacity onPress={() =>this.props.navigator.pop()}>
-            {this.props.canBack == true?  <Image
-                source={require('../../images/account/arrow_left.png')}
-                style={styles.back}>
-            </Image>:<View></View>}
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle,{flex: 1,textAlign: 'center'}]}>{this.props.titleName}</Text>
-                {this.props.canBack == true?<View style={styles.back}></View>:<View></View>}
+                <TouchableOpacity style={{width:Width / 3}} onPress={() =>this.props.navigator.pop()}>
+                    {this.props.canBack == true?<View style={styles.goBack} /> :<View></View>}
+                </TouchableOpacity>
+                <Text style={[styles.headerTitle,{flex: 1,textAlign: 'center'}]}>{this.props.titleName}</Text>
+                        {this.props.canBack == true?<View style={styles.back}></View>:<View></View>}
 
-        </View>
+            </View>
         );
     }
 }
@@ -54,4 +53,14 @@ const styles = StyleSheet.create({
         textAlign:'center',
         fontWeight:'600'
     },
+    goBack:{
+        borderLeftWidth:1,
+        borderBottomWidth:1,
+        borderColor:'#fff',
+        width:15,
+        height:15,
+        transform:[{rotate:'45deg'}],
+        marginLeft:15
+    }
+
 });
