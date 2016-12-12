@@ -1,4 +1,4 @@
-# Ironman我的天啊
+# Ironman 
 
 1.node,rn环境是必须的啦
 2.package.json 先安装的啦
