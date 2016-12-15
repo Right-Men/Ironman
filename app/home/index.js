@@ -21,7 +21,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Moment from 'moment'
 import Config from '../common/config'
 import ProductDetail from './productDetail'
-import TicketDetail from '../ticket/ticketDetail'
+import TicketDetail from './ticketDetail'
 import  request from '../common/request'
 
 const BANNER_IMGS = [
@@ -96,7 +96,6 @@ class HomePage extends Component {
 
                 var data = responseText
                 if(data){
-
                     this.setState({
 
                         listDataSource_ticket:this.state.listDataSource_ticket.cloneWithRows(data.data)
@@ -211,10 +210,10 @@ class HomePage extends Component {
 
                         </View>
                         <View style={{flexDirection:'row',width:width*0.8-20}}>
-                            <View style={{justifyContent:'center',alignItems:'center'}}><Text style={{ fontSize: 10,textAlign: 'center',color:'#4BB0F1'}}>投资进度</Text></View>
+                            <View style={{justifyContent:'center',alignItems:'center'}}><Text style={{ fontSize: 12,textAlign: 'center',color:'#4BB0F1'}}>投资进度</Text></View>
                             <View style={{flexDirection:'row',flex:1,justifyContent:'flex-end'}}>
-                            <View style={{height:20,width:width*0.16,justifyContent:'center',backgroundColor:'#EAEBEC',borderWidth:1,borderColor:'#EAEBEC',borderRadius:3}}><Text style={{ fontSize: 10,textAlign: 'center'}}>我要预约</Text></View>
-                            <View style={{marginLeft:10,height:20,width:width*0.16,justifyContent:'center',backgroundColor:'#4BB0F1',borderWidth:1,borderColor:'#EAEBEC',borderRadius:3}}><Text style={{ fontSize: 10,textAlign: 'center',color:'#fff'}}>立即投资</Text></View>
+                            <View style={{width:width*0.18,height:23,justifyContent:'center',backgroundColor:'#EAEBEC',borderWidth:1,borderColor:'#EAEBEC',borderRadius:3}}><Text style={{ fontSize: 12,textAlign: 'center'}}>我要预约</Text></View>
+                            <View style={{marginLeft:15,width:width*0.18,height:23,justifyContent:'center',backgroundColor:'#4BB0F1',borderWidth:1,borderColor:'#EAEBEC',borderRadius:3}}><Text style={{ fontSize: 12,textAlign: 'center',color:'#fff'}}>立即投资</Text></View>
                             </View>
                         </View>
                     </View>
@@ -297,10 +296,10 @@ class HomePage extends Component {
 
                             <View style={styles.cellfixed}>
                                 <Text style={[styles.welcome,{color:'#F59C00',fontSize:11}]}>
-                                    {row.discountCount}天
+                                    {row.surplusDays}天
 
                                 </Text>
-                                <Text style={[styles.welcome,{fontSize:11}]}>
+                                <Text style={[styles.welcome,{color:'#9D9D9D',fontSize:11}]}>
                                     剩余天数
                                 </Text>
                             </View>
@@ -323,7 +322,7 @@ class HomePage extends Component {
                                     发布时间
                                 </Text>
                                 <Text style={[styles.welcome,{color:'#F74155',fontSize:11}]}>
-                                    {Moment(row.startTime).format("YYYY.MM.DD")}
+                                    {Moment(row.issuingDate).format("YYYY.MM.DD")}
                                 </Text>
                             </View>
                             <View style={[styles.cellfixed,{flex:1}]}>
@@ -343,7 +342,7 @@ class HomePage extends Component {
                                    背书次数
                                 </Text>
                                 <Text style={[styles.welcome,{color:'#4BB0F1',fontSize:11}]}>
-                                    {row.surplusDays}次
+                                    {row.discountCount}次
                                 </Text>
                             </View>
                             <View style={[styles.cellfixed,{flex:1}]}>

@@ -105,11 +105,6 @@ export default class Invest2 extends Component{
 
                     cacheResults.items = items
 
-                    /*        console.log('data.data.data.length:'+typeof data.data.data.length)
-                     if(typeof data.data.data.length !== 'number'){
-                     console.log('============================')
-                     this._renderFooter(true)
-                     }*/
                     console.log('cacheResults.total====='+cacheResults.total)
 
                     if(page!==0){
@@ -157,7 +152,6 @@ export default class Invest2 extends Component{
 
                         />
                       }
-
                       onEndReachedThreshold={20}//距离底部高度多少进行预加载
                       enableEmptySections={true}
                       showsVerticalScrollIndicator={false}

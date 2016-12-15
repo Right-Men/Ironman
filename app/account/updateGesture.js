@@ -12,7 +12,7 @@ import {
     AsyncStorage,
 InteractionManager
 } from 'react-native';
-
+import store from 'react-native-simple-store';
 import PasswordGesture from 'react-native-gesture-password';
 import Toast, {DURATION} from 'react-native-easy-toast'
 
@@ -38,6 +38,9 @@ class UpdateGesture extends Component{
         } else {
             // The second password
             if ( password === Password1 ) {
+                store.get('user').then((user) => {
+                    store.update('user',{gesturePwd:password})
+                })
                 this.setState({
                     status: 'right',
                     message: '手势密码修改成功：' + password
@@ -102,7 +105,7 @@ class UpdateGesture extends Component{
                     </Image>
                 </TouchableOpacity>
                  <Text style={[styles.headerTitle,{flex: 1,textAlign: 'center'}]}>手势密码</Text>
-                <View style={styles.back}></View>
+                <View style={styles.back} />
                 <Toast
                     ref="toast"
                     style={{backgroundColor:'black'}}

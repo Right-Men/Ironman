@@ -28,10 +28,10 @@ export default class Title extends React.Component {
         return (
             <View  style={[styles.header,{flexDirection: 'row'}]}>
                 <TouchableOpacity style={{width:Width / 3}} onPress={() =>this.props.navigator.pop()}>
-                    {this.props.canBack == true?<View style={styles.goBack} /> :<View></View>}
+                    {this.props.canBack == true?<View style={styles.goBack} /> :<View/>}
                 </TouchableOpacity>
                 <Text style={[styles.headerTitle,{flex: 1,textAlign: 'center'}]}>{this.props.titleName}</Text>
-                        {this.props.canBack == true?<View style={styles.back}></View>:<View></View>}
+                        {this.props.canBack == true?<View style={styles.back}/>:<View/>}
 
             </View>
         );
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     },
     header:{
         paddingTop:25,
-        paddingBottom:12,
+        paddingBottom:10,
         backgroundColor:'#42AFF0'
     },
     headerTitle:{

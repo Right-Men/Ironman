@@ -55,9 +55,20 @@ export default class Main extends Component{
 
     componentDidMount() {
         _navigator = this.props.navigator;
+
         InteractionManager.runAfterInteractions(() => {
+            this._getTotal();
             this._fetchData(0)
         });
+
+    }
+
+    _getTotal(){
+        request.get(Config.api.release + Config.api.invest+0+'/10000')
+            .then((responseText) =>{
+                console.log('cacheResults.total=====_getTotal===:'+responseText.data.data.length)
+                cacheResults.total  = responseText.data.data.length
+            })
 
     }
     //私有方法
@@ -74,7 +85,8 @@ export default class Main extends Component{
                 isRefreshing:true
             })
         }
-        var URL = Config.api.release + Config.api.invest+0+'/100'
+        var URL = Config.api.release + Config.api.invest+page*10+'/10'
+
         request.get(URL )
             .then((responseText) =>{
                 console.log('------test3------'+responseText)
@@ -95,7 +107,8 @@ export default class Main extends Component{
                         console.log('============================')
                         this._renderFooter(true)
                     }*/
-                    cacheResults.total = data.data.data.length
+                    console.log('cacheResults.total====='+cacheResults.total)
+
                     if(page!==0){
                         this.setState({
                             isLoadingTail:false,
@@ -131,7 +144,7 @@ export default class Main extends Component{
             <ListView dataSource={this.state.dataSource}
                       renderRow={this._renderRow}
                       renderFooter={this._renderFooter}
-                      onEndReached={this._fetchMoreData}
+                      onEndReached={this._fetchMoreData}//当触底的时候
                       refreshControl = {
                            <RefreshControl
                             refreshing={this.state.isRefreshing}
@@ -142,7 +155,7 @@ export default class Main extends Component{
                         />
                       }
 
-                      onEndReachedThreshold={20}
+                      onEndReachedThreshold={20}//距离底部高度多少进行预加载
                       enableEmptySections={true}
                       showsVerticalScrollIndicator={false}
                       automaticallyAdjustContentInsets={false}
@@ -182,6 +195,7 @@ export default class Main extends Component{
         />
     }
     _fetchMoreData=() =>{
+        //如果没有更多数据 或者 正在加载中
         if(!this._hasMore() || this.state.isLoadingTail){
             return
         }

@@ -6,10 +6,11 @@ import {
     InteractionManager,
     StyleSheet,
     Dimensions,
-    ActivityIndicator
+    ActivityIndicator,
+    StatusBar
 
 } from 'react-native';
-
+import store from 'react-native-simple-store';
 import Login from './login';
 import Gesture from './login/gesturePwd'
 const {width, height} = Dimensions.get('window');
@@ -20,15 +21,32 @@ class Splash extends Component{
     // 构造
     constructor(props) {
         super(props);
+        this.state={
+           logined:false,
+
+        }
+
     }
     componentDidMount() {
         const {navigator} = this.props;
+        console.log('*********')
+         store.get('user').then((user) => {
+            console.log(user)
+            if(user != null){
+               /* store.save('gesturePwd',{gesturePwd:user.gesturePwd});*/
+                this.setState({
+                    logined:true
+                })
+            }
+         })
+
+
 
         this.timer = setTimeout( () => {
             InteractionManager.runAfterInteractions(() => {
                 navigator.resetTo({
-                    component:Gesture,
-                    name:'login'
+                    component: this.state.logined?Gesture:Login,
+                    name: this.state.logined?'Gesture':'Login'
                 });
             });
         },10);
@@ -50,6 +68,14 @@ class Splash extends Component{
              />
              </View>*/
             <View style={styles.bootPage}>
+                <StatusBar
+                    barStyle="light-content"
+                    animated={true}
+                    translucent ={true}
+                    showHideTransition="slide"
+                    hidden={false}
+                    backgroundColor ="rgba(66,175,240,.0)"
+                />
                 <ActivityIndicator color="#ee735c" />
             </View>
         );

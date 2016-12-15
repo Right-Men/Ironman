@@ -33,18 +33,12 @@ class ticketDetail extends Component{
         super(props);
         // 初始状态
         this.state = {};
-        this._test = this._test.bind(this);
+
         _navigator = this.props.navigator;
 
     }
 
-    componentDidMount() {
 
-    }
-
-    _test(){
-        alert('123')
-    }
 
     render(){
         return(
@@ -76,7 +70,7 @@ class ticketDetail extends Component{
                          "state": 8*/}
                         <View style={{flexDirection:'row'}}>
                         <View style={{  height: width*0.4,backgroundColor:'transparent', alignItems: 'center', justifyContent: 'center',marginLeft:20}}>
-                            <Text style={{ backgroundColor:'transparent', color:'#fff', fontSize:14, fontWeight:'400',marginTop:width*0.08 }}></Text>
+                            <Text style={{ backgroundColor:'transparent', color:'#fff', fontSize:14, fontWeight:'400',marginTop:width*0.08 }} />
                             <View style={{height: width*0.258,width: width*0.258, backgroundColor:'#rgba(223,224,226,.2)',borderRadius:52.5, alignItems: 'center', justifyContent: 'center'}}>
                                 <View style={{height: width*0.227,width:width*0.227, backgroundColor:'#rgba(223,224,226,.6)',borderRadius:48.5, alignItems: 'center', justifyContent: 'center'}}>
                                     <View style={{height:width*0.195,width:width*0.195, backgroundColor:'#DFE0E2',borderRadius:50, alignItems: 'center', justifyContent: 'center'}}>
@@ -97,7 +91,7 @@ class ticketDetail extends Component{
                                 </View>
                             </View>
                             <View style={{height: width*0.4,backgroundColor:'transparent', alignItems: 'center', justifyContent: 'center',marginRight:20}}>
-                                <Text style={{ backgroundColor:'transparent', color:'#fff', fontSize:14, fontWeight:'400',marginTop:width*0.08 }}></Text>
+                                <Text style={{ backgroundColor:'transparent', color:'#fff', fontSize:14, fontWeight:'400',marginTop:width*0.08 }} />
                                 <View style={{height: width*0.258,width: width*0.258, backgroundColor:'#rgba(223,224,226,.2)',borderRadius:52.5, alignItems: 'center', justifyContent: 'center'}}>
                                     <View style={{height: width*0.227,width:width*0.227, backgroundColor:'#rgba(223,224,226,.6)',borderRadius:48.5, alignItems: 'center', justifyContent: 'center'}}>
                                         <View style={{height:width*0.195,width:width*0.195, backgroundColor:'#DFE0E2',borderRadius:50, alignItems: 'center', justifyContent: 'center'}}>
@@ -159,7 +153,7 @@ class ticketDetail extends Component{
                         style={{width:width * 0.5}}>
                         <Text style={{color:'#fff',textAlign: 'center'}}>我有意向</Text>
                     </TouchableHighlight>
-                    <View style={{backgroundColor:'#ddd',height:50,width: 1}}></View>
+                    <View style={{backgroundColor:'#ddd',height:50,width: 1}} />
                     <TouchableHighlight   style={{width:width * 0.5}}>
                         <Text style={{color:'#fff',textAlign: 'center'}}>我要报价</Text>
                     </TouchableHighlight>
@@ -194,7 +188,7 @@ class TicketPic extends Component{
                             <View style={{ padding:7,}}>
                                 <Image  source={require('../../images/account/pj-pic1.jpg')}
                                         style={{height:100,width:width*0.5 - 20}}
-                                ></Image>
+                                />
                             </View>
 
                         </View>
@@ -202,7 +196,7 @@ class TicketPic extends Component{
                             <View style={{ padding:7,}}>
                                 <Image  source={require('../../images/account/pj-pic1.jpg')}
                                         style={{height:100,width:width*0.5 - 20}}
-                                ></Image>
+                                />
                             </View>
 
                         </View>
@@ -216,7 +210,7 @@ class TicketPic extends Component{
                             <View style={{ padding:7,}}>
                                 <Image  source={require('../../images/account/pj-pic2.jpg')}
                                         style={{height:100,width:width*0.5 - 20}}
-                                ></Image>
+                                />
                             </View>
 
                         </View>
@@ -224,7 +218,7 @@ class TicketPic extends Component{
                             <View style={{ padding:7,}}>
                                 <Image  source={require('../../images/account/pj-pic2.jpg')}
                                         style={{height:100,width:width*0.5 - 20}}
-                                ></Image>
+                                />
                             </View>
 
                         </View>

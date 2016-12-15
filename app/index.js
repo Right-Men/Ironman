@@ -17,7 +17,8 @@ import {
     AsyncStorage,
     Dimensions,
     StatusBar,
-    ActivityIndicator
+    ActivityIndicator,
+    ToastAndroid
 
 } from 'react-native';
 
@@ -41,12 +42,35 @@ class Root extends Component{
 
     }
 
+    componentWillMount() {
+
+    }
     componentDidMount() {
        /* AsyncStorage.removeItem('enterd')*/
         this._asyncAppStatus()
 
+        BackAndroid.addEventListener('hardwarePress',() => this._onBackAndroid())
 
-
+    }
+    _onBackAndroid = () => {
+        const navigator = this.refs.navigator;
+        if(!navigator) return false;
+        const routers = navigator.getCurrentRoutes();
+        if(routers.length > 1){
+            const  top = routers[routers.length -1];
+            const handleBack = (top.sceneRef && top.sceneRef.onBackAndroid);
+            if(handleBack){
+                return handleBack();
+            }
+            navigator.pop();
+            return true;
+        }
+        if(this.lastBackPressed && (this.lastBackPressed + 2000 >= Date.now())){
+            return false;
+        }
+            this.lastBackPressed = Date.now();
+            ToastAndroid.show('再按一次退出应用',ToastAndroid.SHORT)
+            return true;
     }
 
     _asyncAppStatus(){
@@ -100,10 +124,19 @@ class Root extends Component{
             return <Slider enterSlide = {this._enterSlide}/>
         }
                 return(
+                    <View style={{flex:1}}>
+                        <StatusBar
+                            barStyle="light-content"
+                            animated={true}
+                            translucent ={true}
+                            showHideTransition="slide"
+                            hidden={false}
+                            backgroundColor ="rgba(66,175,240,.0)"
 
-
+                        />
                         <Navigator
-                            ref = "splash"
+                            style={{flex:1}}
+                            ref = "navigator"
                             configureScene={this.configureScene}
                             renderScene={this.renderScene}
                             sceneStyle={{backgroundColor:'#fff'}}
@@ -112,6 +145,8 @@ class Root extends Component{
                             name: 'Splash'
                             }}
                         />
+                    </View>
+
                 )
     }
 
@@ -131,4 +166,4 @@ const  styles = StyleSheet.create({
 
 AppRegistry.registerComponent('fl', () => Root);
 
-// export default Root; 
+// export default Root;

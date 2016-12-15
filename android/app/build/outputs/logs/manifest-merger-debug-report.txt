@@ -252,26 +252,28 @@ MERGED from org.webkit:android-jsc:r174650:2:3
 		ADDED from AndroidManifest.xml:14:7
 activity#com.fl.MainActivity
 ADDED from AndroidManifest.xml:19:7
-	android:label
+	android:screenOrientation
 		ADDED from AndroidManifest.xml:21:9
-	android:configChanges
+	android:label
 		ADDED from AndroidManifest.xml:22:9
+	android:configChanges
+		ADDED from AndroidManifest.xml:23:9
 	android:name
 		ADDED from AndroidManifest.xml:20:9
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:23:9
+ADDED from AndroidManifest.xml:24:9
 action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:24:13
-	android:name
-		ADDED from AndroidManifest.xml:24:21
-category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:25:13
 	android:name
-		ADDED from AndroidManifest.xml:25:23
-activity#com.facebook.react.devsupport.DevSettingsActivity
-ADDED from AndroidManifest.xml:28:7
+		ADDED from AndroidManifest.xml:25:21
+category#android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:26:13
 	android:name
-		ADDED from AndroidManifest.xml:28:17
+		ADDED from AndroidManifest.xml:26:23
+activity#com.facebook.react.devsupport.DevSettingsActivity
+ADDED from AndroidManifest.xml:29:7
+	android:name
+		ADDED from AndroidManifest.xml:29:17
 android:uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
 IMPLIED from AndroidManifest.xml:1:1 reason: org.webkit.android_jsc has a targetSdkVersion < 4
 android:uses-permission#android.permission.READ_PHONE_STATE

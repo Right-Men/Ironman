@@ -28,6 +28,7 @@ class Slider extends Component{
     constructor(props) {
         super(props);
         this.state={
+
             loop:false,
             banners:[
                 require('../images/banner/app2.png'),
@@ -38,26 +39,9 @@ class Slider extends Component{
         }
     }
     componentDidMount() {
-
-
-     /*   this.timer = setTimeout( () => {
-            InteractionManager.runAfterInteractions(() => {
-                navigator.resetTo({
-                    component:Login,
-                    name:'login'
-                });
-            });
-        },20);*/
-
     }
 
     _enter = () => {
-    /*   AsyncStorage.setItem('enterd','yes')
-        AsyncStorage.getItem('enterd',(err,result) =>{
-            console.log('slider-----'+result)
-            })
-        const {navigator} = this.props;
-        navigator.push({name:'login',component:Login})*/
         this.props.enterSlide()
     }
 
@@ -71,7 +55,6 @@ class Slider extends Component{
                     loop ={this.state.loop}
 
                 >
-
                 <View style={styles.slide}>
                     <Image style={styles.image} source={require('../images/banner/app1.png')} />
                 </View>

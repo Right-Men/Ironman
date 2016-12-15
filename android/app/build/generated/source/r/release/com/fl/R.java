@@ -1933,10 +1933,14 @@ containing a value of this type.
         public static final int images_home_icons_icon1=0x7f020074;
         public static final int images_home_icons_icon2=0x7f020075;
         public static final int images_home_icons_icon3=0x7f020076;
-        public static final int images_login_logo=0x7f020077;
-        public static final int node_modules_reactnative_libraries_customcomponents_navigationexperimental_assets_backicon=0x7f020078;
-        public static final int notification_template_icon_bg=0x7f02007a;
-        public static final int splash=0x7f020079;
+        public static final int images_invest_progress_done=0x7f020077;
+        public static final int images_invest_progress_last_undone=0x7f020078;
+        public static final int images_invest_progress_start_done=0x7f020079;
+        public static final int images_invest_progress_undone=0x7f02007a;
+        public static final int images_login_logo=0x7f02007b;
+        public static final int node_modules_reactnative_libraries_customcomponents_navigationexperimental_assets_backicon=0x7f02007c;
+        public static final int notification_template_icon_bg=0x7f02007e;
+        public static final int splash=0x7f02007d;
     }
     public static final class id {
         public static final int ChasingDots=0x7f0d0029;

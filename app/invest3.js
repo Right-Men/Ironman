@@ -17,27 +17,19 @@ import {
     TouchableHighlight,
     ActivityIndicator,
     InteractionManager,
-    RefreshControl
+    RefreshControl,
+    Image
 
 } from 'react-native';
-import {
-    SwRefreshScrollView,
-    SwRefreshListView,
-    RefreshStatus,
-    LoadMoreStatus
-} from 'react-native-swRefresh'
+
 import  request from './common/request'
 import Config from './common/config'
 const {width,height}=Dimensions.get('window')
-var _navigator;
 import Detail from './home/productDetail'
-import * as Progress from 'react-native-progress';
 
-var cacheResults = {
-    nextPage : 1,
-    items :[],
-    total:0
-}
+
+
+
 
 export default class Invest3 extends Component{
 
@@ -49,232 +41,128 @@ export default class Invest3 extends Component{
 
         // 初始状态
         this.state = {
-            isLoadingTail:false,
-            isRefreshing:false,
-            dataLength:0,
+            loader: 0,
+            refreshing: false,
+            page:0,
+            total:0,
+            data:null,
+            hasMore:true,
             dataSource:this._dataSource.cloneWithRows([])
         };
     }
 
     componentDidMount() {
-        _navigator = this.props.navigator;
-
         InteractionManager.runAfterInteractions(() => {
-            this._getTotal();
-            this._fetchData(0)
+            this.pulldown(0)
         });
-
     }
 
-    _getTotal(){
-        request.get(Config.api.release + Config.api.invest+0+'/10000')
-            .then((responseText) =>{
-                console.log('cacheResults.total=====_getTotal===:'+responseText.data.data.length)
-                cacheResults.total  = responseText.data.data.length
-            })
+    pulldown = (count) => {
 
-    }
-    //私有方法
-    _fetchData(page){
+        if (count == 0) {
+            this.setState({loader: 0});
+        } else {
+            this.setState({refreshing: true});
+        }
 
-        if(page !== 0){
+        this.pageIndex = 0;
+        var URL = Config.api.release + Config.api.invest +  this.pageIndex * 10 + '/10';
+        request.get(URL).then((responseText) => {
+            var data = responseText;
+            this.state.total = data.data.iTotalRecords;
             this.setState({
-                isLoadingTail:true
-            })
-        }else{
+                dataSource: this.state.dataSource.cloneWithRows(data.data.data),
+                data: data.data.data,
+                loader: 1,
+                refreshing: false
+            });
 
-            this.setState({
+        })
+        this.pageIndex = 1;
 
-                isRefreshing:true
+
+    };
+
+    pullup = () => {
+        if(this.pageIndex > 0){
+            var URL = Config.api.release + Config.api.invest +  this.pageIndex * 10 + '/10';
+            request.get(URL).then((responseText) => {
+                if( typeof responseText.data.length !=='number' ){
+                    if(responseText.data.data.length>0){
+                        let arr = this.state.data;
+                        arr.push(...responseText.data.data);
+                        this.setState({
+                            dataSource: this.state.dataSource.cloneWithRows(arr),
+                            data:arr
+                        });
+                        this.pageIndex ++;
+                    }
+                }
+                 else{
+                    this.setState({
+                        hasMore:false
+                    })
+                   /* alert('没有更多数据了')*/
+                }
             })
         }
-        var URL = Config.api.release + Config.api.invest+page*10+'/10'
 
-        request.get(URL )
-            .then((responseText) =>{
-                console.log('------test3------'+responseText)
-                var data = responseText
-                if(data){
-                    var items = cacheResults.items.slice()
-                    if(page !== 0){
-                        items = items.concat(data.data.data)
-                        cacheResults.nextPage += 1
-                    }else{
-                        items = data.data.data.concat(items)
-                    }
+    };
 
-                    cacheResults.items = items
+    _renderFooter = () => {
+        if (!this.state.hasMore) {
+            return (
+                <View style={styles.loadingMore}>
+                    <Text style={styles.loadingText}>没有更多数据了</Text>
+                </View> )
+        }
 
-                    /*        console.log('data.data.data.length:'+typeof data.data.data.length)
-                     if(typeof data.data.data.length !== 'number'){
-                     console.log('============================')
-                     this._renderFooter(true)
-                     }*/
-                    console.log('cacheResults.total====='+cacheResults.total)
-
-                    if(page!==0){
-                        this.setState({
-                            isLoadingTail:false,
-                            dataSource:this.state.dataSource.cloneWithRows(cacheResults.items)
-
-                        })
-                    }else{
-                        this.setState({
-                            isRefreshing:false,
-                            dataSource:this.state.dataSource.cloneWithRows(cacheResults.items)
-
-                        })
-                    }
-                }
-            })
-            .catch((error) => {
-                if(page !== 0){
-                    this.setState({
-                        isLoadingTail:false})
-                }else{
-                    this.setState({
-                        isRefreshing:false})
-                }
-
-
-                console.warn(error)
-            })
     }
+
     render(){
 
         return(
+            <ListView
 
-            <ListView dataSource={this.state.dataSource}
-                      renderRow={this._renderRow}
-                      renderFooter={this._renderFooter}
-                      onEndReached={this._fetchMoreData}//当触底的时候
-                      refreshControl = {
-                           <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={this._onRefresh}
-                            tintColor="#ff6600"
-                            title = "拼命加载中。。。"
-
-                        />
-                      }
-
-                      onEndReachedThreshold={20}//距离底部高度多少进行预加载
-                      enableEmptySections={true}
-                      showsVerticalScrollIndicator={false}
-                      automaticallyAdjustContentInsets={false}
+                dataSource={this.state.dataSource}
+                renderRow={this.renderRow}
+                renderFooter={this._renderFooter}
+                refreshControl={
+                            <RefreshControl
+                                title={'刷新数据...'}
+                                refreshing={this.state.refreshing}
+                                onRefresh={() => {
+                                    this.pulldown(1)
+                                }}
+                                colors={['#ff0000', '#00ff00', '#0000ff', '#3ad564']}
+                                progressBackgroundColor="#ffffff"/>
+                        }
+                onEndReachedThreshold={10}
+                onEndReached={this.pullup}
+                enableEmptySections={true}
             />
+
         )
     }
 
-    _onRefresh = () =>{
-        if(this._hasMore()|| this.state.isRefreshing){
-            return
-        }
 
-        this._fetchData(0)
-    }
-    _renderFooter= (isMore) =>{
-        if(!this._hasMore()){
-            return(
-                <View style={styles.loadingMore}>
-                    <Text style={styles.loadingText}>没有更多数据了</Text>
-                </View>
-            )
-        }
-        if(isMore){
-            return(
-                <View style={styles.loadingMore}>
-                    <Text style={styles.loadingText}>没有更多数据了</Text>
-                </View>
-            )
-        }
-        if(!this.state.isLoadingTail){
-            return <View style={styles.loadingMore} />
-        }
-        return  <ActivityIndicator
-
-            style={[styles.loadingMore]}
-
-        />
-    }
-    _fetchMoreData=() =>{
-        //如果没有更多数据 或者 正在加载中
-        if(!this._hasMore() || this.state.isLoadingTail){
-            return
-        }
-        var page = cacheResults.nextPage
-        this._fetchData(page)
-
-    }
-    _hasMore(){
-        return cacheResults.items.length != cacheResults.total
-    }
-    _renderRow = (row) => {
+    renderRow = (row) => {
         return (
             <TouchableHighlight
                 onPress={() => _navigator.push({name:'Detail',component:Detail,passProps: {itemData:row}})}
                 underlayColor='rgba(34,26,38,.1)'
                 style={{marginBottom:10,backgroundColor:'#fff',borderBottomColor:'#F7F5F5',borderBottomWidth:1,borderTopWidth:1,borderTopColor:'#F7F5F5'}}>
-                <View style={{flex:1,flexDirection:'row',marginLeft:10}}>
-                    <View style={{  marginBottom:10,backgroundColor:'#fff',width:width*0.72}}>
-
-                        <View style={styles.flexContainer}>
-                            <View style={[styles.type,{ backgroundColor:row.productKey == 'depositInstead'?'#FCAB33':row.productKey == 'timePointSave'?'#74BCF4':'#EF704F'}]}>
-                                <Text style={[styles.welcome,{color:"#fff"}]}>
-
-                                    {row.productKey == 'depositInstead'?'保证金代存':row.productKey == 'timePointSave'?'时点存款':'敞口代还'}
-                                </Text>
-                            </View>
-                            <View style={styles.cell}>
-                                <Text style={styles.productName}>
-                                    {row.borrowerName}
-                                </Text>
-                                <Text style={[styles.bankName,{fontSize:10}]}>
-                                    ({row.bankname})
-                                </Text>
-                            </View>
-
-                        </View>
-                        <View style={[styles.flexContainer]}>
-                            <View style={{height: 50,
-                                    justifyContent:'center',
-                                   }}>
-                                <Text style={[styles.welcome,{color:'red',fontSize:11}]}>
-                                    {row.planMoney/10000}万
-                                </Text>
-                                <Text style={[styles.welcome,{color:'#9D9D9D',fontSize:11}]}>
-                                    融资金额
-                                </Text>
-                            </View>
-                            <View style={styles.cellfixed}>
-                                <Text style={styles.welcome}>
-                                    时点存款
-                                </Text>
-                                <Text style={[styles.welcome,{color:'#9D9D9D',fontSize:11}]}>
-                                    业务类型
-                                </Text>
-                            </View>
-                            <View style={styles.cellfixed}>
-                                <Text style={styles.welcome}>
-                                    {row.bidLimit}天
-                                </Text>
-                                <Text style={[styles.welcome,{color:'#9D9D9D',fontSize:11}]}>
-                                    投资天数
-                                </Text>
-                            </View>
-                            <View style={styles.cellfixed}>
-                                <Text style={styles.welcome}>
-                                    {row.dayRate}%
-                                </Text>
-                                <Text style={[styles.welcome,{color:'#9D9D9D',fontSize:11}]}>
-                                    日化利率
-                                </Text>
-                            </View>
+                <View style={{width: width,backgroundColor:'#fff',marginBottom:10}}>
+                    <View style={{flexDirection:'row',height: 40,alignItems: 'center'}}>
+                        <Text style={{marginLeft:10,width:80}}>
+                            {row.productKey == 'depositInstead'?'保证金代存':row.productKey == 'timePointSave'?'时点存款':'敞口代还'}</Text>
+                        <View style={{flexDirection:'row',marginLeft:20,}}>
+                            <Text>投资进度{row.planId}</Text>
+                            <Text style={{justifyContent:'center',color: 'red',marginLeft:10,textDecorationLine:'underline'}}>查看</Text>
                         </View>
                     </View>
-                    <View style={{flex:1,alignItems: 'center', justifyContent: 'center',backgroundColor:'#fff'}}>
-                        <Progress.Circle size={60}    animated={true} thickness={4} progress={0.6} showsText={true} />
-                    </View>
+                    <View style={{width: width,height: 1,backgroundColor:'#ccc',marginBottom:10}} />
+
                 </View>
             </TouchableHighlight>)
 
@@ -286,24 +174,22 @@ export default class Invest3 extends Component{
 
 
 }
-const styles=StyleSheet.create({
-    container:{
-
+const styles = StyleSheet.create({
+    container: {},
+    content: {
+        width: width,
+        height: height,
+        backgroundColor: 'yellow',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    content:{
-        width:width,
-        height:height,
-        backgroundColor:'yellow',
-        justifyContent:'center',
-        alignItems:'center'
-    },
-    cell:{
-        height:100,
-        backgroundColor:'#ddd',
-        alignItems:'center',
-        justifyContent:'center',
-        borderBottomColor:'#ececec',
-        borderBottomWidth:1
+    cell: {
+        height: 100,
+        backgroundColor: '#ddd',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderBottomColor: '#ececec',
+        borderBottomWidth: 1
 
     },
     page: {
@@ -325,55 +211,55 @@ const styles=StyleSheet.create({
         color: '#f15353'
     },
 
-    item:{
-        width:width - 95,
-        marginBottom:10,
-        backgroundColor:'#fff',
+    item: {
+        width: width - 95,
+        marginBottom: 10,
+        backgroundColor: '#fff',
 
-        paddingLeft:15
+        paddingLeft: 15
 
-    },
-
-    title:{
-        padding:10,
-        fontSize:18,
-        color:'#333'
-    },
-    itemFooter:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        backgroundColor:'#eee'
-    },
-    handleBox:{
-        padding:10,
-        flexDirection:'row',
-        width:width / 2 - 0.5,
-        justifyContent:'center',
-        backgroundColor:'#fff'
     },
 
-    handleText:{
-        paddingLeft:12,
-        fontSize:18,
-        color:'#333'
+    title: {
+        padding: 10,
+        fontSize: 18,
+        color: '#333'
     },
-    up:{
-        fontSize:22,
-        color:'#333'
+    itemFooter: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: '#eee'
+    },
+    handleBox: {
+        padding: 10,
+        flexDirection: 'row',
+        width: width / 2 - 0.5,
+        justifyContent: 'center',
+        backgroundColor: '#fff'
+    },
+
+    handleText: {
+        paddingLeft: 12,
+        fontSize: 18,
+        color: '#333'
+    },
+    up: {
+        fontSize: 22,
+        color: '#333'
     },
 
     flexContainer: {
         // 容器需要添加direction才能变成让子元素flex
-        flex:1,
+        flex: 1,
         flexDirection: 'row',
-        justifyContent:'space-between',
-        alignItems:'center'
+        justifyContent: 'space-between',
+        alignItems: 'center'
 
     },
     cell: {
         flex: 1,
         height: 50,
-        marginLeft:10,
+        marginLeft: 10,
         alignItems: 'center', justifyContent: 'center'
 
 
@@ -381,40 +267,42 @@ const styles=StyleSheet.create({
     welcome: {
         fontSize: 10,
         textAlign: 'center',
-        justifyContent:'center',
+        justifyContent: 'center',
         margin: 5,
 
     },
-    bankName:{
+    bankName: {
         fontSize: 9,
 
 
-        color:'#9D9D9D',
+        color: '#9D9D9D',
 
 
     },
-    productName:{
+    productName: {
 
-        fontSize:12
+        fontSize: 12
     },
     cellfixed: {
 
-        justifyContent:'center',
+        justifyContent: 'center',
     },
     type: {
         height: 30,
 
-        width:70,
-        justifyContent:'center'
+        width: 70,
+        justifyContent: 'center'
 
 
     },
-    loadingMore:{
-        marginVertical:20
+    loadingMore: {
+        marginVertical: 20
     },
-    loadingText:{
-        color:"#777",
-        textAlign:'center'
+    loadingText: {
+        color: "#777",
+        textAlign: 'center'
     }
 
 })
+
+

@@ -1,420 +1,206 @@
-/**
- * Created by fandongyang on 2016/12/9.
- */
-/**
- * Created by fandongyang on 2016/12/4.
- */
+'use strict';
+
 
 import React, { Component } from 'react';
 import {
-    AppRegistry,
+    Image,
+    ListView,
     StyleSheet,
     Text,
     View,
-    Dimensions,
-    ListView,
-    Alert,
     TouchableHighlight,
-    ActivityIndicator,
-    InteractionManager,
-    RefreshControl
 
 } from 'react-native';
-import {
-    SwRefreshScrollView,
-    SwRefreshListView,
-    RefreshStatus,
-    LoadMoreStatus
-} from 'react-native-swRefresh'
 import  request from './common/request'
 import Config from './common/config'
-const {width,height}=Dimensions.get('window')
-var _navigator;
-import Detail from './home/productDetail'
-import * as Progress from 'react-native-progress';
+//var REQUEST_URL = 'http://zhuanlan.zhihu.com/api/columns/pinapps/posts?limit=10&offset=';
+var REQUEST_URL1 = ' http://139.129.234.183:8360/api/list/public/'
 
-var cacheResults = {
-    nextPage : 1,
-    items :[],
-    total:0
-}
+export default class Posts extends  Component{
 
-export default class Invest4 extends Component{
-
-    _dataSource = new ListView.DataSource({rowHasChanged:(row1,row2)=>row1 !== row2})
-    // 构造
     constructor(props) {
 
         super(props);
 
         // 初始状态
         this.state = {
-            isLoadingTail:false,
-            isRefreshing:false,
-            dataLength:0,
-            dataSource:this._dataSource.cloneWithRows([])
+            dataSource: new ListView.DataSource({
+                rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+            responseData: [],
+            loaded: false,
+            pageOffset: 0,
+            loading: false,
         };
     }
 
-    componentDidMount() {
-        _navigator = this.props.navigator;
+    /**
+     * component 渲染后加载数据
+     */
+    componentDidMount () {
 
-        InteractionManager.runAfterInteractions(() => {
-            this._getTotal();
-            this._fetchData(0)
-        });
-
+        this.fetchData1(REQUEST_URL1 + this.state.pageOffset * 5 +'/5');
+        //this.fetchData(REQUEST_URL + this.state.pageOffset * 10);
     }
 
-    _getTotal(){
-        request.get(Config.api.release + Config.api.invest+0+'/10000')
+
+    fetchData1 = (_URL) => {
+        //var _URL = Config.api.release + Config.api.invest+this.state.num * 10+'/10'
+
+        request.get(_URL)
             .then((responseText) =>{
-                console.log('cacheResults.total=====_getTotal===:'+responseText.data.data.length)
-                cacheResults.total  = responseText.data.data.length
+
+                var data = this.state.responseData.concat(responseText.data.data);
+                this.setState({
+                    dataSource: this.state.dataSource.cloneWithRows(data),
+                    loaded: true,
+                    responseData: data,
+                    pageOffset: ++this.state.pageOffset,
+                    loading: false,
+                });
+
+
             })
 
     }
-    //私有方法
-    _fetchData(page){
 
-        if(page !== 0){
-            this.setState({
-                isLoadingTail:true
-            })
-        }else{
+    /**
+     * 渲染方法
+     * @returns {XML}
+     */
+    render() {
 
-            this.setState({
-
-                isRefreshing:true
-            })
+        if (!this.state.loaded) {
+            return this.renderLoadingView();
         }
-        var URL = Config.api.release + Config.api.invest+page*10+'/10'
 
-        request.get(URL )
-            .then((responseText) =>{
-                console.log('------test3------'+responseText)
-                var data = responseText
-                if(data){
-                    var items = cacheResults.items.slice()
-                    if(page !== 0){
-                        items = items.concat(data.data.data)
-                        cacheResults.nextPage += 1
-                    }else{
-                        items = data.data.data.concat(items)
-                    }
-
-                    cacheResults.items = items
-
-                    /*        console.log('data.data.data.length:'+typeof data.data.data.length)
-                     if(typeof data.data.data.length !== 'number'){
-                     console.log('============================')
-                     this._renderFooter(true)
-                     }*/
-                    console.log('cacheResults.total====='+cacheResults.total)
-
-                    if(page!==0){
-                        this.setState({
-                            isLoadingTail:false,
-                            dataSource:this.state.dataSource.cloneWithRows(cacheResults.items)
-
-                        })
-                    }else{
-                        this.setState({
-                            isRefreshing:false,
-                            dataSource:this.state.dataSource.cloneWithRows(cacheResults.items)
-
-                        })
-                    }
-                }
-            })
-            .catch((error) => {
-                if(page !== 0){
-                    this.setState({
-                        isLoadingTail:false})
-                }else{
-                    this.setState({
-                        isRefreshing:false})
-                }
-
-
-                console.warn(error)
-            })
-    }
-    render(){
-
-        return(
-
-            <ListView dataSource={this.state.dataSource}
-                      renderRow={this._renderRow}
-                      renderFooter={this._renderFooter}
-                      onEndReached={this._fetchMoreData}//当触底的时候
-                      refreshControl = {
-                           <RefreshControl
-                            refreshing={this.state.isRefreshing}
-                            onRefresh={this._onRefresh}
-                            tintColor="#ff6600"
-                            title = "拼命加载中。。。"
-
-                        />
-                      }
-
-                      onEndReachedThreshold={20}//距离底部高度多少进行预加载
-                      enableEmptySections={true}
-                      showsVerticalScrollIndicator={false}
-                      automaticallyAdjustContentInsets={false}
+        return (
+            <ListView
+                dataSource={this.state.dataSource}
+                pageSize={5}
+                renderRow={this.renderList}
+                style={styles.listView}
+                renderFooter={this.renderFooter}
             />
-        )
+        );
     }
 
-    _onRefresh = () =>{
-        if(this._hasMore()|| this.state.isRefreshing){
-            return
-        }
-
-        this._fetchData(0)
+    /**
+     * 页面进来的时候加载 loading
+     * @returns {XML}
+     */
+    renderLoadingView () {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.loadingText}>
+                    加载中...
+                </Text>
+            </View>
+        );
     }
-    _renderFooter= (isMore) =>{
-        if(!this._hasMore()){
-            return(
-                <View style={styles.loadingMore}>
-                    <Text style={styles.loadingText}>没有更多数据了</Text>
-                </View>
-            )
-        }
-        if(isMore){
-            return(
-                <View style={styles.loadingMore}>
-                    <Text style={styles.loadingText}>没有更多数据了</Text>
-                </View>
-            )
-        }
-        if(!this.state.isLoadingTail){
-            return <View style={styles.loadingMore} />
-        }
-        return  <ActivityIndicator
 
-            style={[styles.loadingMore]}
+    /**
+     * 滚动到底部的时候加载更多
+     */
+    endReached() {
+        //this.fetchData(REQUEST_URL + this.state.pageOffset * 10);
+        this.fetchData(REQUEST_URL1 + this.state.pageOffset * 5);
+    }
 
-        />
+    /**
+     * 加载更多
+     */
+    loadMore () {
+        this.setState({
+            loading: true
+        });
+        //this.fetchData(REQUEST_URL + this.state.pageOffset * 10);
+        this.fetchData1(REQUEST_URL1 + this.state.pageOffset * 5);
     }
-    _fetchMoreData=() =>{
-        //如果没有更多数据 或者 正在加载中
-        if(!this._hasMore() || this.state.isLoadingTail){
-            return
-        }
-        var page = cacheResults.nextPage
-        this._fetchData(page)
 
-    }
-    _hasMore(){
-        return cacheResults.items.length != cacheResults.total
-    }
-    _renderRow = (row) => {
+    /**
+     * 底部视图
+     * @returns {XML}
+     */
+    renderFooter() {
         return (
             <TouchableHighlight
-                onPress={() => _navigator.push({name:'Detail',component:Detail,passProps: {itemData:row}})}
-                underlayColor='rgba(34,26,38,.1)'
-                style={{marginBottom:10,backgroundColor:'#fff',borderBottomColor:'#F7F5F5',borderBottomWidth:1,borderTopWidth:1,borderTopColor:'#F7F5F5'}}>
-                <View style={{flex:1,flexDirection:'row',marginLeft:10}}>
-                    <View style={{  marginBottom:10,backgroundColor:'#fff',width:width*0.72}}>
-
-                        <View style={styles.flexContainer}>
-                            <View style={[styles.type,{ backgroundColor:row.productKey == 'depositInstead'?'#FCAB33':row.productKey == 'timePointSave'?'#74BCF4':'#EF704F'}]}>
-                                <Text style={[styles.welcome,{color:"#fff"}]}>
-
-                                    {row.productKey == 'depositInstead'?'保证金代存':row.productKey == 'timePointSave'?'时点存款':'敞口代还'}
-                                </Text>
-                            </View>
-                            <View style={styles.cell}>
-                                <Text style={styles.productName}>
-                                    {row.borrowerName}
-                                </Text>
-                                <Text style={[styles.bankName,{fontSize:10}]}>
-                                    ({row.bankname})
-                                </Text>
-                            </View>
-
-                        </View>
-                        <View style={[styles.flexContainer]}>
-                            <View style={{height: 50,
-                                    justifyContent:'center',
-                                   }}>
-                                <Text style={[styles.welcome,{color:'red',fontSize:11}]}>
-                                    {row.planMoney/10000}万
-                                </Text>
-                                <Text style={[styles.welcome,{color:'#9D9D9D',fontSize:11}]}>
-                                    融资金额
-                                </Text>
-                            </View>
-                            <View style={styles.cellfixed}>
-                                <Text style={styles.welcome}>
-                                    时点存款
-                                </Text>
-                                <Text style={[styles.welcome,{color:'#9D9D9D',fontSize:11}]}>
-                                    业务类型
-                                </Text>
-                            </View>
-                            <View style={styles.cellfixed}>
-                                <Text style={styles.welcome}>
-                                    {row.bidLimit}天
-                                </Text>
-                                <Text style={[styles.welcome,{color:'#9D9D9D',fontSize:11}]}>
-                                    投资天数
-                                </Text>
-                            </View>
-                            <View style={styles.cellfixed}>
-                                <Text style={styles.welcome}>
-                                    {row.dayRate}%
-                                </Text>
-                                <Text style={[styles.welcome,{color:'#9D9D9D',fontSize:11}]}>
-                                    日化利率
-                                </Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={{flex:1,alignItems: 'center', justifyContent: 'center',backgroundColor:'#fff'}}>
-                        <Progress.Circle size={60}    animated={true} thickness={4} progress={0.6} showsText={true} />
-                    </View>
+                onPress={this.loadMore}
+                underlayColor='#FFFFFF'>
+                <View style={styles.containerFooter}>
+                    {this.state.loading ?
+                        <Image
+                            source={{uri: 'http://s6.mogucdn.com/pic/140813/kuw9n_ieyggojrmi4dknlbmiytambqgiyde_26x26.gif'}}
+                            style={{width: 26, height: 26, flex: 1, marginLeft: -80}}
+                        />
+                        :
+                        <Text style={styles.loadeMoreBtn}>
+                            点击加载更多...
+                        </Text>
+                    }
                 </View>
-            </TouchableHighlight>)
+            </TouchableHighlight>
+        )
 
     }
 
+    /**
+     * 开始加载列表
+     * @param post
+     * @returns {XML}
+     */
+    renderList(post) {
+        return (
+            <View>
+                <Text>1</Text>
+            </View>
+        );
+    }
 
+    /**
+     * 点击跳转到 post 详情页
+     * @param post
+     */
+    renderDetail(post){
+     /*   this.props.navigator.push({
+            title: post.title,
+            component: PostDetailView,
+            passProps: {slug: post.slug}
+        })*/
+    }
+};
 
+var styles = StyleSheet.create({
 
-
-
-}
-const styles=StyleSheet.create({
-    container:{
-
-    },
-    content:{
-        width:width,
-        height:height,
-        backgroundColor:'yellow',
-        justifyContent:'center',
-        alignItems:'center'
-    },
-    cell:{
-        height:100,
-        backgroundColor:'#ddd',
-        alignItems:'center',
-        justifyContent:'center',
-        borderBottomColor:'#ececec',
-        borderBottomWidth:1
-
-    },
-    page: {
+    container: {
         flex: 1,
-        height: 140,
-        resizeMode: 'stretch'
+        flexDirection: 'column',
+        backgroundColor: '#ffffff',
     },
-    menuView: {
-
-        flexDirection: 'row',
-        marginTop: 20
+    listView: {
+        paddingBottom: 20,
     },
 
-    priceText: {
-        flex: 1,
-        alignSelf: 'flex-start',
-        textAlign: 'left',
-        fontSize: 13,
-        color: '#f15353'
-    },
-
-    item:{
-        width:width - 95,
-        marginBottom:10,
-        backgroundColor:'#fff',
-
-        paddingLeft:15
-
-    },
-
-    title:{
-        padding:10,
-        fontSize:18,
-        color:'#333'
-    },
-    itemFooter:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        backgroundColor:'#eee'
-    },
-    handleBox:{
-        padding:10,
-        flexDirection:'row',
-        width:width / 2 - 0.5,
-        justifyContent:'center',
-        backgroundColor:'#fff'
-    },
-
-    handleText:{
-        paddingLeft:12,
-        fontSize:18,
-        color:'#333'
-    },
-    up:{
-        fontSize:22,
-        color:'#333'
-    },
-
-    flexContainer: {
-        // 容器需要添加direction才能变成让子元素flex
-        flex:1,
-        flexDirection: 'row',
-        justifyContent:'space-between',
-        alignItems:'center'
-
-    },
-    cell: {
-        flex: 1,
-        height: 50,
-        marginLeft:10,
-        alignItems: 'center', justifyContent: 'center'
-
-
-    },
-    welcome: {
-        fontSize: 10,
+    loadingText: {
+        marginTop: 100,
         textAlign: 'center',
-        justifyContent:'center',
-        margin: 5,
-
+        flex: 1,
     },
-    bankName:{
-        fontSize: 9,
 
-
-        color:'#9D9D9D',
-
-
+    containerFooter: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingTop: 10,
+        paddingBottom: 10,
+        justifyContent: 'center',
     },
-    productName:{
 
-        fontSize:12
+    loadeMoreBtn: {
+        textAlign: 'center',
+        flex: 1,
+        color: '#f34943',
+        fontSize: 14,
+        marginTop: 5,
     },
-    cellfixed: {
+});
 
-        justifyContent:'center',
-    },
-    type: {
-        height: 30,
-
-        width:70,
-        justifyContent:'center'
-
-
-    },
-    loadingMore:{
-        marginVertical:20
-    },
-    loadingText:{
-        color:"#777",
-        textAlign:'center'
-    }
-
-})

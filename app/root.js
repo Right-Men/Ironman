@@ -126,7 +126,8 @@ class Root extends Component {
                             selectedTabIOS: 'list',
                         });
                     }}>
-                          <Navigator
+
+                 {/*       <Navigator
                             initialRoute={{
                             name:'HomePage',
                             component:HomePage
@@ -139,8 +140,8 @@ class Root extends Component {
                             let Component = route.component;
                             return <Component {...route.passProps} route = {route} navigator={navigator} />
                         }}
-                        />
-                       {/* <HomePage navigator={this.props.navigator} />*/}
+                        />*/}
+                      <HomePage navigator={this.props.navigator} />
 
                     </Icon.TabBarItemIOS>
                     <Icon.TabBarItemIOS
@@ -156,7 +157,6 @@ class Root extends Component {
                         });
                     }}>
                         <Invest navigator={this.props.navigator} />
-
                     </Icon.TabBarItemIOS>
                     <Icon.TabBarItemIOS
                         title="我要票源"
@@ -185,7 +185,7 @@ class Root extends Component {
                             selectedTabIOS: 'account'
                         });
                     }}>
-                        <Navigator
+                      {/*  <Navigator
                             initialRoute={{
                             name:'account',
                             component:Account
@@ -197,8 +197,8 @@ class Root extends Component {
                             let Component = route.component;
                             return <Component {...route.passProps} route = {route} navigator={navigator} />
                         }}
-                        />
-                        {/*<Account />*/}
+                        />*/}
+                      <Account navigator={this.props.navigator} />
                     </Icon.TabBarItemIOS>
 
                 </TabBarIOS>

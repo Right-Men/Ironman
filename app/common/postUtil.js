@@ -14,7 +14,12 @@ let postUtil = {
             .then((responseText) => {
                 //  callback(JSON.parse(responseText));
                 callback(responseText);
-            }).done();
+            }).catch(function(error) {
+                Alert('网络请求连接失败');
+            console.log('There has been a problem with your fetch operation: ' + error.message);
+            // ADD THIS THROW error
+            throw error;
+        });
     },
 }
 export default postUtil;

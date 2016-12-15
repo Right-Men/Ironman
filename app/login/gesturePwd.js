@@ -20,33 +20,77 @@ import {
     StatusBar
 } from 'react-native';
 const  {width,height} = Dimensions.get("window")
+import store from 'react-native-simple-store';
 var Platform = require('Platform');
 import PasswordGesture from 'react-native-gesture-password';
 import Toast, {DURATION} from 'react-native-easy-toast'
 import Root from '../root'
 import Login from '../login'
-var Password1 = '1236';
+import Config from '../common/config'
+
 export default class gesture extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             message: '请绘制您的手势密码',
-            status: 'normal'
+            status: 'normal',
+            gesturePwd:'',
+            userName:'',
+            passWord:''
         }
     }
+
+    componentDidMount() {
+        store.get('user').then((user) => {
+            console.log(user.gesturePwd)
+            if(user != null){
+                this.setState({
+                    gesturePwd:user.gesturePwd,
+                    userName:user.userName,
+                    passWord:user.passWord
+                })
+
+            }
+        })
+    }
+    onPressCallback = () => {
+        let url = Config.api.release + Config.api.login
+
+        if(!this.userName == ''&&!this.passWord == ''){
+            this._getLogin(url,{username:this.state.userName,password:this.state.passWord})
+
+                .then((responseText) =>{
+                    if(responseText){
+                        responseText.success == true ? this.onLoginSuccess():Alert.alert('登录失败,请检查您输入的账号密码是否正确!');
+                    }
+                })
+        }
+    };
+    _getLogin = (url,body) => {
+        var options = _.extend(Config.header,{
+            body:JSON.stringify(body)
+        })
+
+        return fetch(url, options)
+            .then((response) => response.json()).catch(function(error) {
+                console.log('There has been a problem with your fetch operation: ' + error.message);
+                Alert.alert('请检查网络连接')
+                /*throw error;*/
+            });
+    }
     onEnd(password) {
-        if (password == Password1) {
+        if (password == this.state.gesturePwd) {
             this.refs.toast.show('登录成功',DURATION.LENGTH_LONG)
             this.setState({
                 status: 'right',
                 message: '绘制正确'
             },() =>{
                 setTimeout( () => {
-
+                    this.onPressCallback();
                     InteractionManager.runAfterInteractions(() => {
                        /* AsyncStorage.setItem('gesturePwd',password)*/
-                        this.props.navigator.push({name:'root',component:Root})
+                        this.props.navigator.replace({name:'root',component:Root})
 
                     });
                 },1500);
@@ -106,13 +150,13 @@ export default class gesture extends Component {
                     hidden={false}
                     backgroundColor ="rgba(66,175,240,.0)"
                 />
-                   <View style={{justifyContent:'center',alignItems:'center',top:width*0.098}}>
+                   <View style={{justifyContent:'center',alignItems:'center',top:37}}>
                         <Image
-                        style={{width:150,height:150}}
+                        style={{width:width*0.37,height:width*0.37}}
                         source={require('../../images/account/account_gesture2.png')} />
-                        <Text style={[styles.textStyle,{margin: 20}]}>130******9917</Text>
+                        <Text style={[styles.textStyle,{marginTop: 10}]}>130******9917</Text>
                   </View>
-                   <View style={{flexDirection:'row',top:height*0.58}}>
+                   <View style={{flexDirection:'row',top:height*0.65}}>
                            <TouchableOpacity
                                 onPress={this._forgetGesture}
                                  style={styles.loginText}
@@ -129,7 +173,7 @@ export default class gesture extends Component {
                      <Toast
                         ref="toast"
                         style={{backgroundColor:'black'}}
-                        position='center'
+                        position='bottom'
                         textStyle={{color:'white'}}
                 />
               </View>

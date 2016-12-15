@@ -16,13 +16,16 @@ import {
     TouchableOpacity,
     TouchableHighlight,
     ScrollView,
-    TextInput
+    TextInput,
+    InteractionManager
 } from 'react-native';
 import Title from '../common/title'
-
+import Moment from 'moment'
 import Modal from 'react-native-modalbox'
 import Button from 'react-native-button'
 import ScrollableTabView, {DefaultTabBar, } from 'react-native-scrollable-tab-view';
+import request from '../common/request'
+import config from '../common/config'
 const {width,height} = Dimensions.get("window");
 
 var _navigator;
@@ -34,7 +37,10 @@ class ProductDetail extends Component{
         super(props);
         // 初始状态
         this.state = {
-            text:null
+            text:null,
+            borrowerName:null,
+            linkperson:null,
+
         };
 
 
@@ -42,8 +48,62 @@ class ProductDetail extends Component{
 
     }
 
-    componentDidMount() {
+/*
+* {
+ "errno":0,
+ "errmsg":"",
+ "data":{
+ "shareholders":[
+ {
+ "shareholderId":7,
+ "shareholdertypekey":"person_shareequity",
+ "shareholder":"毛程文",
+ "shareholderType":"个人"
+ }
+ ],
+ "projectMessage":{
+ "planId":74,
+ "planName":"新丹兰有限公司2016年11月资金业务项目",
+ "planNumber":"jzww_161124_004",
+ "borrowerName":"新丹兰有限公司",
+ "planMoney":2500000,
+ "productName":"保证金代存",
+ "bankname":"中国农业银行股份有限公司 ",
+ "planLimit":4,
+ "dayRate":2.12,
+ "deadline":"2017-02-28",
+ "linkperson":"黄渤",
+ "creditLevel":"D",
+ "partMoney":500000,
+ "state":1,
+ "area":"吉林",
+ "partCounts":5,
+ "copies":4,
+ "proportion":20
+ },
+ "otherMaterials":{
 
+ },
+ "creditLevel":"D",
+ "isShow":true
+ }
+ }*/
+    componentDidMount() {
+        InteractionManager.runAfterInteractions(
+            this._getInvestDetail()
+        )
+
+    }
+    _getInvestDetail=() => {
+        request.get(config.api.release + config.api.investDetail + this.props.itemData.planId)
+            .then(responseText => {
+                var pjm =  responseText.data.projectMessage
+                    this.setState({
+                        borrowerName:pjm.borrowerName,
+                        linkperson:pjm.linkperson,
+                    })
+
+            })
     }
 
     _openModal_yx =() =>{
@@ -61,6 +121,7 @@ class ProductDetail extends Component{
         this.refs.modal_bj.close();
     }
     render(){
+        var data = this.props.itemData;
         return(
 
 
@@ -75,24 +136,57 @@ class ProductDetail extends Component{
                     >
 
                         <View style={{height: width*0.4,backgroundColor:'transparent', alignItems: 'center',justifyContent:'center'}}>
-                            <Text style={{ backgroundColor:'transparent', color:'#fff', fontSize:14, fontWeight:'400'}}>融资金额(万)</Text>
+                            <Text style={{ backgroundColor:'transparent', color:'#fff', fontSize:14, fontWeight:'400'}}>融资金额(万){data.planId}</Text>
                             <View style={{height: width*0.28,width:width*0.28, backgroundColor:'#rgba(223,224,226,.2)',borderRadius:52.5, alignItems: 'center', justifyContent: 'center'}}>
                                 <View style={{height: width*0.25,width:width*0.25, backgroundColor:'#rgba(223,224,226,.6)',borderRadius:48.5, alignItems: 'center', justifyContent: 'center'}}>
                                     <View style={{height: width*0.22,width:width*0.22, backgroundColor:'#DFE0E2',borderRadius:50, alignItems: 'center', justifyContent: 'center'}}>
-                                         <Text style={{ backgroundColor:'transparent', color:'#F6A241', fontSize:30, fontWeight:'400'}}>{this.props.itemData.planMoney/10000}</Text>
+                                         <Text style={{ backgroundColor:'transparent', color:'#F6A241', fontSize:30, fontWeight:'400'}}>{data.planMoney/10000}</Text>
                                     </View>
                                 </View>
                             </View>
                         </View>
+                        {
+                     /*
+                     * {
+                     "errno": 0,
+                     "errmsg": "",
+                     "data": [
+                     {
+                     "planId": 74,
+                     "planName": "新丹兰有限公司2016年11月资金业务项目",
+                     "state": 1,
+                     "borrowerName": "新丹兰有限公司",
+                     "planMoney": 2500000,
+                     "productName": "保证金代存",
+                     "productKey": "depositInstead",
+                     "bankname": "中国农业银行股份有限公司 ",
+                     "planLimit": 4,
+                     "dayRate": 2.12,
+                     "area": "吉林",
+                     "bidLimit": 2323,
+                     "bidEnd": "2016-11-27T16:00:00.000Z",
+                     "proportion": 20
+                     },
+                     {},
+                     {}
+                     ]
+                     }*/}
                         <View style={{flexDirection:'row', justifyContent:'space-between',alignItems:'center',backgroundColor:'rgba(0, 0, 0, .4)', height:width*0.1,width:width}}>
-                            <View style={{width:width*0.33}}>
-                                <Text style={{  color:'#fff', fontSize:12, fontWeight:'400',textAlign: 'center'}}>日化利率:<Text style={{color:"#F6A241" }}>{this.props.itemData.dayRate}‰</Text></Text>
+                            <View style={{width:width*0.25}}>
+                                <Text style={{  color:'#fff', fontSize:12, fontWeight:'400',textAlign: 'center'}}>日化利率</Text>
+                                <Text style={{color:"#F6A241",textAlign: 'center', fontSize:11 }}>{data.dayRate}‰</Text>
                             </View>
-                            <View style={{width:width*0.33}}>
-                                <Text style={{  color:'#fff', fontSize:12, fontWeight:'400',textAlign: 'center'}}>投资天数:<Text style={{color:"#F6A241" }}>{this.props.itemData.bidLimit}天</Text></Text>
+                            <View style={{width:width*0.25}}>
+                                <Text style={{  color:'#fff', fontSize:12, fontWeight:'400',textAlign: 'center'}}>投资天数</Text>
+                                <Text style={{color:"#F6A241" ,textAlign: 'center', fontSize:11}}>{data.planLimit}天</Text>
                             </View>
-                            <View style={{width:width*0.33}}>
-                                <Text style={{ color:'#fff', fontSize:12, fontWeight:'400',textAlign: 'center' }}>招标截止:<Text style={{color:"#F6A241" }}>2016.3.10</Text></Text>
+                            <View style={{width:width*0.25}}>
+                                <Text style={{ color:'#fff', fontSize:12, fontWeight:'400',textAlign: 'center' }}>招标截止</Text>
+                                <Text style={{color:"#F6A241" ,textAlign: 'center', fontSize:11}}>{Moment(data.bidEnd).format('YYYY.MM.DD')}</Text>
+                            </View>
+                            <View style={{width:width*0.25}}>
+                                <Text style={{ color:'#fff', fontSize:12, fontWeight:'400',textAlign: 'center' }}>所在地区</Text>
+                                <Text style={{color:"#F6A241" ,textAlign: 'center', fontSize:11}}>{data.area}</Text>
                             </View>
                         </View>
                     </Image>
@@ -106,13 +200,12 @@ class ProductDetail extends Component{
                        locked={false}
                        initialPage={0}
                        renderTabBar={() => <DefaultTabBar />}
-
-                       tabBarUnderlineStyle={{backgroundColor: '#E1E0E1',height:1}}
+                       tabBarUnderlineStyle = {{backgroundColor:'transparent'}}
                        tabBarUnderlineColor='#F6A341'
                        tabBarBackgroundColor='#F7F5F5'
                        tabBarActiveTextColor='#F6A341'
                        tabBarInactiveTextColor='#686868'
-                       tabBarTextStyle={{fontSize: 15,fontWeight:'400'}}
+                       tabBarTextStyle={{fontSize: 15,fontWeight:'400',marginTop:10}}
                     >
 
                         <ProductInfo tabLabel="产品介绍" />
@@ -130,7 +223,7 @@ class ProductDetail extends Component{
 
                         <Text style={{color:'#fff',textAlign: 'center'}}>我有意向</Text>
                     </TouchableHighlight>
-                    <View style={{backgroundColor:'#ddd',height:50,width: 1}}></View>
+                    <View style={{backgroundColor:'#ddd',height:50,width: 1}}/>
                     <TouchableHighlight
                         onPress={this._openModal_bj}
                         underlayColor='rgba(34,26,38,.1)'
@@ -286,7 +379,7 @@ class ProductInfo extends Component{
                             <View style={{ padding:7,}}>
                               <Image  source={require('../../images/account/pj-pic1.jpg')}
                                       style={{height:100,width:width*0.5 - 20}}
-                                      ></Image>
+                                      />
                              </View>
 
                         </View>
@@ -294,7 +387,7 @@ class ProductInfo extends Component{
                             <View style={{ padding:7,}}>
                                 <Image  source={require('../../images/account/pj-pic2.jpg')}
                                         style={{height:100,width:width*0.5 - 20}}
-                                ></Image>
+                                />
                               </View>
 
                         </View>
@@ -326,7 +419,7 @@ class InvestRecordItem extends Component{
             <Text style={styles.investRecordTitle}>{this.props.count}万</Text>
             <Text style={styles.investRecordTitle}>{this.props.date}</Text>
         </View>
-        <View style={{backgroundColor:'#F7F5F5',height:1}}></View>
+        <View style={{backgroundColor:'#F7F5F5',height:1}}/>
             </View>
         )
     }
@@ -367,16 +460,16 @@ class ProjectScheduleItem extends Component{
  render(){
 
      return(
-         <View>
-             <View style={{ backgroundColor:'#fff', flexDirection:'row'}}>
-                 <View style={{width:90,backgroundColor:'#F7F5F5',margin: 15,borderRadius:50}}>
-                     <Image source={this.props.renderIcon}
-                            style={{width:50,height:50,margin:20}}
+         <View style={{flex:1}}>
+             <View style={{ backgroundColor:'#fff', alignItems:'center',justifyContent:'center',flexDirection:'row',height:63.75,}}>
+
+                   <Image source={this.props.renderIcon}
+                            style={{width:15,height:63.75}}
                      />
-                 </View>
-                 <View style={{width:width*0.7,justifyContent:'center',margin: 25}}>
-                     <Text>{this.props.title}</Text>
-                     <Text style={{color:'#878787',marginTop:10}}>{this.props.info}</Text>
+
+                 <View style={{width:width*0.7,justifyContent:'center',marginLeft:20}}>
+                     <Text style={{color:'#858687'}}>{this.props.title}</Text>
+
                  </View>
              </View>
          </View>
@@ -389,10 +482,17 @@ class ProjectSchedule extends Component{
         return(
             <View>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                <ProjectScheduleItem  renderIcon={require('../../images/account/alarm.png')}  title="发布时间" info="2016.08.10    15：00"  />
-                <ProjectScheduleItem  renderIcon={require('../../images/account/calculator.png')}  title="计划金额" info="500000元"  />
-                <ProjectScheduleItem  renderIcon={require('../../images/account/group.png')}  title="参与人数" info="6人"  />
-                <ProjectScheduleItem  renderIcon={require('../../images/account/money.png')}  title="赚取收益" info="60000"  />
+                    <View style={{width:width,height:20,backgroundColor:'#fff'}} />
+                    <ProjectScheduleItem  renderIcon={require('../../images/invest/progress_start_done.png')}  title="接单"        />
+                    <ProjectScheduleItem  renderIcon={require('../../images/invest/progress_done.png')} title="资料初审"    />
+                    <ProjectScheduleItem  renderIcon={require('../../images/invest/progress_done.png')}  title="复审"   />
+                    <ProjectScheduleItem  renderIcon={require('../../images/invest/progress_done.png')}  title="风险审核"   />
+                    <ProjectScheduleItem  renderIcon={require('../../images/invest/progress_undone.png')}  title="业务预约"    />
+                    <ProjectScheduleItem  renderIcon={require('../../images/invest/progress_undone.png')}  title="办理手续"    />
+                    <ProjectScheduleItem  renderIcon={require('../../images/invest/progress_undone.png')} title="收益前置"    />
+                    <ProjectScheduleItem  renderIcon={require('../../images/invest/progress_undone.png')} title="资金划转"    />
+                    <ProjectScheduleItem style={{marginBottom:10}}  renderIcon={require('../../images/invest/progress_last_undone.png')}  title="业务完成"    />
+                    <View style={{width:width,height:20,backgroundColor:'#fff'}} />
                 </ScrollView>
             </View>
         )

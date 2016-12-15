@@ -6,14 +6,17 @@ import {
     View,
     Image,
     TextInput,
+    StatusBar,
     InteractionManager,
     TouchableOpacity,
     Dimensions,
     LayoutAnimation,
-    Alert
+    Alert,
+    AsyncStorage
 } from 'react-native';
 import Spinner from 'react-native-spinkit'
-
+import store from 'react-native-simple-store';
+import Toast, {DURATION} from 'react-native-easy-toast'
 import {
     Hoshi,
 } from 'react-native-textinput-effects';
@@ -27,7 +30,7 @@ class Longin extends Component {
     constructor(props) {
         super(props);
         this.userName = "";
-        this.password = "";
+        this.passWord = "";
         this.state = {
             fetchingIndex: false,
             //加载动画状态
@@ -47,19 +50,22 @@ class Longin extends Component {
     onPressCallback = () => {
         let formData = new FormData();
         formData.append("username",this.userName);
-        formData.append("password",this.password);
+        formData.append("password",this.passWord);
         let url = Config.api.release + Config.api.login
         if(this.userName == ''){
-            Alert.alert('请输入账号')
-        }else if(this.password == ''){
-            Alert.alert('请输入密码')
+            this.refs.toast.show('请输入账号',DURATION.LENGTH_LONG)
+
+        }else if(this.passWord == ''){
+            this.refs.toast.show('请输入密码',DURATION.LENGTH_LONG)
+
         }
-        if(!this.userName == ''&&!this.password == ''){
-            this._getLogin(url,{username:this.userName,password:this.password})
+        if(!this.userName == ''&&!this.passWord == ''){
+            this._getLogin(url,{username:this.userName,password:this.passWord})
          /*   Request.post(url,{username:this.userName,password:this.password})*/
                 .then((responseText) =>{
                     if(responseText){
-                        responseText.success == true ? this.onLoginSuccess():Alert.alert('登录失败,请检查您输入的账号密码是否正确!');
+
+                        responseText.success == true ? this.onLoginSuccess(): this.refs.toast.show('登录失败,请检查您输入的账号密码是否正确!',DURATION.LENGTH_LONG);
                     }
                 })
         }
@@ -74,14 +80,15 @@ class Longin extends Component {
         return fetch(url, options)
         .then((response) => response.json()).catch(function(error) {
             console.log('There has been a problem with your fetch operation: ' + error.message);
-            Alert.alert('请检查网络连接')
+                this.refs.toast.show('请检查网络连接',DURATION.LENGTH_LONG)
+
             /*throw error;*/
         });
 }
     onLoginSuccess(){
 
         const navigator = this.props.navigator;
-        LayoutAnimation.configureNext({
+     /*   LayoutAnimation.configureNext({
             duration: 600,   //持续时间
             create: {
                 type: 'linear',
@@ -91,13 +98,15 @@ class Longin extends Component {
                 type: 'spring',
                 springDamping: 0.4
             }
-        });
-
+        });*/
+        this._onPress();
+        store.save('user',{userName:this.userName,passWord:this.passWord,gesturePwd:12369})
+        console.log('onLoginSuccess====')
         this.timer = setTimeout( () => {
             InteractionManager.runAfterInteractions(() => {
                 this.setState({isVisible:false})
                  if(navigator){
-                    navigator.push({
+                    navigator.replace({
                         name : 'HomePage',
                         component : LoginSuccess,
                     });
@@ -138,6 +147,14 @@ class Longin extends Component {
         return(
             <View
                 style={{backgroundColor:'#f4f4f4',flex:1}}>
+                <StatusBar
+                    barStyle="light-content"
+                    animated={true}
+                    translucent ={true}
+                    showHideTransition="slide"
+                    hidden={false}
+                    backgroundColor ="rgba(66,175,240,.0)"
+                />
                 <View style={{flex:30,justifyContent: 'center',
                     alignItems: 'center',}}>
                 <Image
@@ -148,10 +165,9 @@ class Longin extends Component {
               <View style={{flex:70,margin: 10}}>
                  <Hoshi
                     label={'账号：'}
-                    // this is used as active border color
+
                     borderColor={'#63B8FF'}
-                    // this is used to set backgroundColor of label mask.
-                    // please pass the backgroundColor of your TextInput container.
+
 
                     onChangeText={(text) => {
                            this.userName = text;
@@ -160,28 +176,21 @@ class Longin extends Component {
                <View style={{height:10,width:width}} />
                 <Hoshi
                     label={'密码：'}
-                    // this is used as active border color
+
                     borderColor={'#63B8FF'}
                     secureTextEntry={true}
                     numberOfLines={1}
 
                     clearButtonMode="while-editing"
-                    // this is used to set backgroundColor of label mask.
-                    // please pass the backgroundColor of your TextInput container.
+
 
                     onChangeText={(text) => {
-                           this.password = text;
+                           this.passWord = text;
                 }}
 
 
                 />
-            {/*   <EditView style={[styles.style_user_input,{ width:width,}]} type="user" name='请输入账号' onChangeText={(text) => {
-                           this.userName = text;
-                }}/>
 
-                <EditView  style={styles.style_pwd_input} type="pwd" name='请输入密码' onChangeText={(text) => {
-                           this.password = text;
-                }}/>*/}
 
                 <TouchableOpacity onPress={this.onPressCallback} style={styles.loginTextView}>
                     <Text style={styles.loginText} >
@@ -198,6 +207,12 @@ class Longin extends Component {
                     </Text>
                 </View>
           </View>
+                <Toast
+                    ref="toast"
+                    style={{backgroundColor:'black'}}
+                    position='bottom'
+                    textStyle={{color:'white'}}
+                />
             </View>
         );
     }
